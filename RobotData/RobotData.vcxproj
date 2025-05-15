@@ -85,6 +85,12 @@
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <IncludePath>$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\arduino\avr\libraries\Wire\src;$(ProjectDir)..\..\..\art_arduino\libraries\Arduino_Vector-master;$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\arduino\avr\cores\arduino;$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\arduino\avr\variants\eightanaloginputs;$(ProjectDir)..\..\..\arduino ide\arduino\hardware\tools\avr\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\arduino ide\arduino\hardware\tools\avr\lib\gcc\avr\7.3.0\include-fixed;$(ProjectDir)..\..\..\arduino ide\arduino\hardware\tools\avr\avr\include;$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\arduino\avr\libraries\Wire\src;$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\arduino\avr\libraries\Wire\src\utility;$(ProjectDir)..\..\..\art_arduino\libraries\Arduino_Vector-master</IncludePath>
+    <RemoteCCompileToolExe>$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\tools\avr\bin\avr-g++</RemoteCCompileToolExe>
+    <RemoteCppCompileToolExe>$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\tools\avr\bin\avr-g++</RemoteCppCompileToolExe>
+    <ValidateArchitecture>false</ValidateArchitecture>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\arduino\avr\cores\arduino;$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\arduino\avr\variants\eightanaloginputs;$(ProjectDir)..\..\..\arduino ide\arduino\hardware\tools\avr\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\arduino ide\arduino\hardware\tools\avr\lib\gcc\avr\7.3.0\include-fixed;$(ProjectDir)..\..\..\arduino ide\arduino\hardware\tools\avr\avr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -94,6 +100,20 @@
       <CAdditionalWarning />
       <CppAdditionalWarning />
       <ForcedIncludeFiles>$(ProjectDir)..\..\..\vs\common7\ide\extensions\pohlmar0.020\Micro Platforms\default\vm-intelli-pre.h;C:\Users\79530\AppData\Local\Temp\VMBuilds\RobotData\nano_atmega328old\Debug\.vmintelli\8bdc300f2efda74677602db82e12c57e\vm-intelli-gcc-defines.h;$(ProjectDir)..\..\..\vs\common7\ide\extensions\pohlmar0.020\Micro Platforms\default\vm-intelli-post.h;$(ProjectDir)__vm\.RobotData.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <UndefineAllPreprocessorDefinitions>true</UndefineAllPreprocessorDefinitions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>_VMICRO_INTELLISENSE;__AVR_atmega328p__;__AVR_ATmega328P__;__AVR_ATmega328p__;F_CPU=16000000L;ARDUINO=108019;ARDUINO_AVR_NANO;ARDUINO_ARCH_AVR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\arduino\avr\libraries\Wire\src;$(ProjectDir)..\..\..\art_arduino\libraries\Arduino_Vector-master;$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\arduino\avr\cores\arduino;$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\arduino\avr\variants\eightanaloginputs;$(ProjectDir)..\..\..\arduino ide\arduino\hardware\tools\avr\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\arduino ide\arduino\hardware\tools\avr\lib\gcc\avr\7.3.0\include-fixed;$(ProjectDir)..\..\..\arduino ide\arduino\hardware\tools\avr\avr\include;$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\arduino\avr\libraries\Wire\src;$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\arduino\avr\libraries\Wire\src\utility;$(ProjectDir)..\..\..\art_arduino\libraries\Arduino_Vector-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <GccToolChain>$(ProjectDir)..\..\..\arduino ide\Arduino\hardware\tools\avr\bin\avr-g++</GccToolChain>
+      <CppLanguageStandard>gnu++11</CppLanguageStandard>
+      <CLanguageStandard>gnu11</CLanguageStandard>
+      <CAdditionalWarning />
+      <CppAdditionalWarning />
+      <ForcedIncludeFiles>$(ProjectDir)..\..\..\vs\common7\ide\extensions\pohlmar0.020\Micro Platforms\default\vm-intelli-pre.h;C:\Users\79530\AppData\Local\Temp\VMBuilds\RobotData\nano_atmega328old\Release\.vmintelli\8bdc300f2efda74677602db82e12c57e\vm-intelli-gcc-defines.h;$(ProjectDir)..\..\..\vs\common7\ide\extensions\pohlmar0.020\Micro Platforms\default\vm-intelli-post.h;$(ProjectDir)__vm\.RobotData.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <UndefineAllPreprocessorDefinitions>true</UndefineAllPreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <PreprocessorDefinitions>_VMICRO_INTELLISENSE;__AVR_atmega328p__;__AVR_ATmega328P__;__AVR_ATmega328p__;F_CPU=16000000L;ARDUINO=108019;ARDUINO_AVR_NANO;ARDUINO_ARCH_AVR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
