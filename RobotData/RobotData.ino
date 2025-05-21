@@ -1,9 +1,5 @@
-﻿//собрать данные с гироскопа MPU6050, компаса HMC5883L, дальномера HC-SR04
-
-
-#include <Vector.h>
+﻿#include <Vector.h>
 #include "Wire.h"
-
 
 // пины HC-SR04
 #define HC_TRIG 3 //выход
@@ -17,6 +13,11 @@ const int sensAccel = 16384.0; // чувствительность ускоре�
 
 // HMC5883L
 const int HMC5883L_addr = 0x1E;
+
+// L298N
+const int ENA = 10, IN1 = 9, IN2 = 8;//мотор A
+const int ENB = 5, IN3 = 7, IN4 = 6;// Мотор B
+const int ENC = 11, IN5 = 12, IN6 = 13;// Мотор C
 
 void sensorInit()
 {
@@ -42,16 +43,19 @@ void sensorInit()
 	Wire.write(0xA0); // записываем в регистр CRB (01) 0xA0 [чувствительность = 5]
 	Wire.write(0x00); // записываем в регистр Mode (02) 0x00 [бесконечный режим измерения]
 	Wire.endTransmission();
+	// L298N
+	pinMode(ENA, OUTPUT);
+	pinMode(IN1, OUTPUT);
+	pinMode(IN2, OUTPUT);
+	pinMode(ENB, OUTPUT);
+	pinMode(IN3, OUTPUT);
+	pinMode(IN4, OUTPUT);
+	pinMode(ENC, OUTPUT);
+	pinMode(IN5, OUTPUT);
+	pinMode(IN6, OUTPUT);
 }
 
-void setup() {
-	Serial.begin(115200);    
-}
-
-void loop() {
-
-}
-
+//расстояние с дальномера в см
 float getSonarvalue()
 {
 	// минимальное время опроса сонара (не рекомендуется опрашивать чаще 30 мс)
@@ -131,4 +135,75 @@ float getCompas()
 	if (azimut < 0) azimut += 2 * PI;
 	if (azimut > 2 * PI) azimut -= 2 * PI;
 	return azimut;
+}
+
+// rot. вращение на величину rot/ положительное - почасовой/ отрицательное - против часовой
+// deg - направление движение; 0 - прямо, 90 - направо, -90 - налево.
+void move(int rot, int deg, int speed)
+{
+	// параметры робота
+	const static float massa = 2; // масса робота кг
+	const static float J = 0.5; // момент инерции робота
+	const static float R = 0.2; // расстояние от центра колеса до центра платформы, м
+	const static float maxSpeed = 0.5; // макс скорость м/с
+	const static float scaleFactor = 255 / maxSpeed;
+
+	// скорости колес v1, v2, v3
+	// massa - масса робота 
+	// Vx, Vy - желаемые скорости по осям координат
+	// J - момент инерции робота 
+	// rot - угловая скорость мобильной платформы (рад/с)
+
+	// Преобразуем градусы в радианы
+	deg = deg * PI / 180.0;
+
+	//скорости Vx и Vy
+	// общий знаменталель
+	float denominator = sqrt(pow(tan(deg), 2) + 1);
+
+	float Vx = speed * tan(deg) * (1 / denominator);
+	float Vy = speed * (1 / denominator);
+
+	// рассчет скоростей на каждом колесе
+	float v1 = (massa / 3) * (sqrt(3) * Vy - Vx + J * R * rot);
+	float v2 = -(massa / 3) * (sqrt(3) * Vy + Vx - J * R * rot);
+	float v3 = (massa / 3) * (2 * Vx + J * R * rot);
+
+	// Масштабирование до диапазона PWM, сохраняя знак
+	v1 = v1 * scaleFactor;
+	v2 = v2 * scaleFactor;
+	v3 = v3 * scaleFactor;
+
+	setMotor(ENA, IN1, IN2, v1);
+	setMotor(ENB, IN3, IN4, v2);
+	setMotor(ENC, IN5, IN6, v3);
+}
+
+// Функция для установки скорости и направления мотора
+void setMotor(int enablePin, int in1, int in2, float velocity) {
+	int pwmValue = abs(velocity); // Абсолютное значение скорости для PWM
+
+	// Ограничиваем PWM значением 0-255
+	pwmValue = constrain(pwmValue, 0, 255);
+
+	if (velocity > 0) {
+		digitalWrite(in1, HIGH);
+		digitalWrite(in2, LOW);
+	}
+	else if (velocity < 0) {
+		digitalWrite(in1, LOW);
+		digitalWrite(in2, HIGH);
+	}
+	else {
+		// Остановка мотора
+		digitalWrite(in1, LOW);
+		digitalWrite(in2, LOW);
+	}
+	analogWrite(enablePin, pwmValue);
+}
+
+bool checkHit()
+{
+	float dist = getSonarvalue();
+	return (dist < 4 ? true : false);
 }
