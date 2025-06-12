@@ -2,8 +2,8 @@
 #include "Wire.h"
 
 // пины HC-SR04
-#define HC_TRIG 3 //выход
-#define HC_ECHO 2 //вход
+#define HC_TRIG 5 //выход
+#define HC_ECHO 6 //вход
 
 // MPU6050
 const int MPU_addr = 0x68;
@@ -15,9 +15,14 @@ const int sensAccel = 16384.0; // чувствительность ускоре�
 const int HMC5883L_addr = 0x1E;
 
 // L298N
-const int ENA = 10, IN1 = 9, IN2 = 8;//мотор A
-const int ENB = 5, IN3 = 7, IN4 = 6;// Мотор B
-const int ENC = 11, IN5 = 12, IN6 = 13;// Мотор C
+//мотор A
+const int ENA = 5, IN1 = 7, IN2 = 10;
+
+// Мотор B
+const int ENB = 6, IN3 = 2, IN4 = 8;
+
+// Мотор C
+const int ENC = 9, IN5 = 11, IN6 = 12;
 
 void sensorInit()
 {
